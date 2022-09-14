@@ -8,8 +8,8 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        string imageCaption = "yo"; //Text to be displayed on picture
-        string saveFileName = "image1"; //Name of file specified by user 
+        string imageCaption = ""; //Text to be displayed on picture
+        string saveFileName = ""; //Name of file specified by user 
 
         //program execution starts from here
 
@@ -42,7 +42,7 @@ internal class Program
         string fetchPicWithoutCaptionUri = @"https://cataas.com/cat";
         string url = "";
 
-        //IF- url will grab a picture of a cat without captions unless specified by user 
+        //IF- url will grab a picture of a cat without captions, else captions input by user will be added. 
         if (PictureCaption.Length <= 0)
         {
             url = fetchPicWithoutCaptionUri;
@@ -52,6 +52,7 @@ internal class Program
             fetchPicWithoutCaptionUri += @"/says/" + PictureCaption;
             url = fetchPicWithoutCaptionUri;
         }
+
 
         using (WebClient client = new WebClient())
         {

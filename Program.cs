@@ -8,28 +8,12 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        string catCaption = "yo";
-        string saveFileName = "file.jpg";
-
-        using (WebClient client = new WebClient())
-        {
-            client.DownloadFile(new Uri(@"https://cataas.com/cat"), @"C:\Users\IOh\Documents\IOh\image1.jfif");
- 
-        }
-
-        APIHelper.InitializeClient();
-        ProcessImage processImage;
-
-        string source = @"https://cataas.com/cat";
-       // FileInfo fileInfo = new FileInfo(source);
-
-        //File.Create(source);
+        string imageCaption = "yo"; //Text to be displayed on picture
+        string saveFileName = "image1"; //Name of file specified by user 
 
         //program execution starts from here
-        Console.WriteLine("Total Arguments: {0}", args.Length);
 
-        Console.Write("Arguments: ");
-
+        //FOR: saving args to variables
         for(int i = 0; i < args.Length; i++)
         {
             if (args[i] == "-o")    
@@ -38,95 +22,41 @@ internal class Program
             }
             if (args[i] == "-t")
             {
-                catCaption = args[i + 1];
+                imageCaption = args[i + 1];
             }
         }
-
-        LoadImage(saveFileName, catCaption);
-
-        Console.WriteLine("Save Name: " + saveFileName);
-        Console.WriteLine("Caption: " + catCaption);
-
+        LoadPicture(saveFileName, imageCaption);
+        Console.ReadKey();
 
     }
-    private static async Task LoadImage(string saveFileName, string pictureCaption)
+    /// <summary>
+    /// Async helper function to load in image. 
+    /// </summary>
+    /// <param name="path"></param>
+ 
+    public static void LoadPicture(string SaveFileName, string PictureCaption)
     {
-        ProcessImage processImage = new ProcessImage(saveFileName, pictureCaption);
-        var picture = await processImage.LoadPicture();
+        string sendToPath = @"C:\Users\IOh\Documents\ConsoleApp\" + SaveFileName + ".jfif";
 
-        Console.WriteLine("Save Name: " + saveFileName);
-        Console.WriteLine("Caption: " + pictureCaption);
-        string wow = "";
-
-      //  var uri = new Uri(picture.Img, UriKind.Absolute);
-
-    }
-
-}
-public static class APIHelper
-{
-    //Client that will interact with API 
-    public static HttpClient HttpClient { get; set; }
-
-    public static void InitializeClient()
-    {
-        //Instantiating http client
-        HttpClient = new HttpClient();
-        HttpClient.DefaultRequestHeaders.Accept.Clear();
-
-        //Adding a header to get json. 
-        HttpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    }
-}
-public class ProcessImage
-{
-    public string SaveFileName { get; set; }
-    public string PictureCaption { get; set; }
-    public ProcessImage(string saveFileName, string pictureCaption)
-    {
-        SaveFileName = saveFileName;
-        PictureCaption = pictureCaption;
-    }
-    public async Task<PictureModel> LoadPicture()
-    {
-        string fetchPicUri = @"/cat/:tag/says/" + PictureCaption;
-        if (SaveFileName.Length <= 0)
-        {
-            throw new Exception();
-        }
-
+        //string sendToPath = @"C:\Users\IOh\Downloads\imageOfCat.jfif";
+        string fetchPicWithoutCaptionUri = @"https://cataas.com/cat";
         string url = "";
 
-        //IF- 
-        if(PictureCaption.Length <= 0)
+        //IF- url will grab a picture of a cat without captions unless specified by user 
+        if (PictureCaption.Length <= 0)
         {
-            url = @"https://cataas.com/cat/";
+            url = fetchPicWithoutCaptionUri;
         }
         else
         {
-            url = fetchPicUri;
+            fetchPicWithoutCaptionUri += @"/says/" + PictureCaption;
+            url = fetchPicWithoutCaptionUri;
         }
 
-        //Open new request and await response 
-        using (HttpResponseMessage response = await APIHelper.HttpClient.GetAsync(url))
+        using (WebClient client = new WebClient())
         {
-            if(response.IsSuccessStatusCode)
-            { 
-                //Takes json data and convert to type given. 
-                PictureModel picture = await response.Content.ReadAsAsync<PictureModel>();
-
-                return picture;
-            }
-            else
-            {
-                throw new Exception(response.ReasonPhrase);
-            }
+            client.DownloadFile(new Uri(url), sendToPath);
         }
-        //Close the stream 
     }
-}
-public class PictureModel
-{
-    public string Picture { get; set; }
 
 }

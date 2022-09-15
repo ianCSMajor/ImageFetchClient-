@@ -8,8 +8,8 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        string imageCaption = ""; //Text to be displayed on picture
-        string saveFileName = ""; //Name of file specified by user 
+        string saveFileName = "haha"; //Name of file specified by user 
+        string imageCaption = "hi"; //Text to be displayed on picture
 
         //FOR: saving args to variables
         for (int i = 0; i < args.Length; i++)
@@ -25,6 +25,8 @@ internal class Program
         }
 
         fetchImageFromRestfulApi fetchImage = new fetchImageFromRestfulApi(saveFileName, imageCaption);
+        fetchImage.LoadPictureHelper();
+
         Console.ReadKey();
 
     }
@@ -59,8 +61,13 @@ public class fetchImageFromRestfulApi
         SaveFileName = newFileName;
         ImageCaption = imageCaption;
 
+    }
+    /// <summary>
+    /// Helper function for loading pictures. 
+    /// </summary>
+    public void LoadPictureHelper()
+    {
         LoadPicture(SaveFileName, ImageCaption);
-
     }
     /// <summary>
     /// Async helper function to load in image. 

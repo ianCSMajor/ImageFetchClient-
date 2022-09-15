@@ -4,8 +4,8 @@
 ## Description
 This application will allow a user to fetch an image from the cataas rest api for download via the command line:
 
-## Steps
- *If you are using Windows, make sure to add "C:\Windows\Microsoft.NET\Framework\v4.0.30319" to environment variables. 
+* Steps
+      * If you are using Windows, make sure to add "C:\Windows\Microsoft.NET\Framework\v4.0.30319" to environment variables. 
  *Open command prompt and locate the directory the project is located in.
  *Build the project via the csc command: "C:\Users\UserName\Desktop>/out:myprogram.exe Program.cs".
  *Run project by typing name of program & args to console: "C:\Users\UserName\Desktop>myprogram.exe -o "image1.jpg" -t "hi" ".

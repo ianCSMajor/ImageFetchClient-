@@ -85,7 +85,7 @@ public class fetchImageFromRestfulApi
     /// </summary>
     /// <param name="SaveFileName"></param>
     /// <param name="PictureCaption"></param>
-    private void LoadPicture(string SaveFileName, string PictureCaption)
+    private async Task LoadPicture(string SaveFileName, string PictureCaption)
     {
         string dowloadFoldersPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         string sendToPath = dowloadFoldersPath + "\\" + SaveFileName;
@@ -103,7 +103,7 @@ public class fetchImageFromRestfulApi
             fetchPicWithCaption = fetchPicWithoutCaption + @"/says/" + PictureCaption;
             url = fetchPicWithCaption;
         }
-        DownloadPicture(url, sendToPath);
+        await DownloadPicture(url, sendToPath);
         
     }
     /// <summary>

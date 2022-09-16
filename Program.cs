@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using System.Net;
 //using ConsoleApp6;
 /// <summary>
-/// Class: Retrieve image from cataas api 
+/// Program: Retrieve image from cataas api 
 /// </summary>
 internal class Program
 {
-    static void Main(string[] args)// -o "file.img" -t 
+    static async void Main(string[] args)// -o "file.img" -t 
     {
         string saveFileName = "newImage1.jpg"; //Name of file specified by user 
         string imageCaption = "ya"; //Text to be displayed on picture
@@ -44,6 +44,9 @@ internal class Program
 /// </summary>
 public class fetchImageFromRestfulApi
 {
+    /// <summary>
+    /// Property that will contain the name of the save file the user has specified.
+    /// </summary>
     private string _saveFileName;
     public string SaveFileName
     {
@@ -61,7 +64,9 @@ public class fetchImageFromRestfulApi
             }
         }
     }
-
+    /// <summary>
+    /// Property that will contain a caption to be overlayed onto the image specified by the user. 
+    /// </summary>
     public string ImageCaption { get; set; }
     /// <summary>
     /// Constructor for this application that sets the file name and image caption and then loading the picture.
@@ -76,9 +81,9 @@ public class fetchImageFromRestfulApi
     /// <summary>
     /// Helper function for loading pictures. 
     /// </summary>
-    public void LoadPictureHelper()
+    public async Task LoadPictureHelper()
     {
-        LoadPictureAsync(SaveFileName, ImageCaption);
+        await LoadPictureAsync(SaveFileName, ImageCaption);
     }
     /// <summary>
     /// Async helper function to load in image. 
@@ -107,7 +112,7 @@ public class fetchImageFromRestfulApi
         
     }
     /// <summary>
-    /// Validator to test if extension is present in user input 
+    /// Download picture from rest api 
     /// </summary>
     /// <param name="newFile"></param>
     private async Task DownloadPictureAsync(string url, string sendToPath)

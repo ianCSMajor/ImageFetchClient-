@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Net;
+using System.Collections.Generic;
 //using ConsoleApp6;
 /// <summary>
 /// Program: Retrieve image from cataas api 
 /// </summary>
 internal class Program
 {
-    static async void Main(string[] args)// -o "file.img" -t 
+    static void Main(string[] args)// -o "file.img" -t 
     {
         string saveFileName = "newImage1.jpg"; //Name of file specified by user 
         string imageCaption = "ya"; //Text to be displayed on picture

@@ -103,7 +103,7 @@ public class fetchImageFromRestfulApi
             fetchPicWithCaption = fetchPicWithoutCaption + @"/says/" + PictureCaption;
             url = fetchPicWithCaption;
         }
-        await DownloadPicture(url, sendToPath);
+        await DownloadPictureAsync(url, sendToPath);
         
     }
     /// <summary>

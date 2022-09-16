@@ -7,22 +7,30 @@ using System.Net;
 /// </summary>
 internal class Program
 {
-    static void Main(string[] args)
+    static void Main(string[] args)// -o "file.img" -t 
     {
-        string saveFileName = "haha"; //Name of file specified by user 
+        string saveFileName = "newImage.jpg"; //Name of file specified by user 
         string imageCaption = "hi"; //Text to be displayed on picture
 
-        //FOR: saving args to variables
-        for (int i = 0; i < args.Length; i++)
+        try
         {
-            if (args[i] == "-o")    
+
+            //FOR: saving args to variables
+            for (int i = 0; i < args.Length; i++)
             {
-                saveFileName = args[i + 1];
+                if (args[i] == "-o")
+                {
+                    saveFileName = args[i + 1]; //Add null checking 
+                }
+                if (args[i] == "-t")
+                {
+                    imageCaption = args[i + 1];
+                }
             }
-            if (args[i] == "-t")
-            {
-                imageCaption = args[i + 1];
-            }
+        }
+        catch (IndexOutOfRangeException e)
+        {
+            Console.WriteLine("No argument specified: {0}",e.Message);
         }
 
         fetchImageFromRestfulApi fetchImage = new fetchImageFromRestfulApi(saveFileName, imageCaption);
@@ -80,7 +88,9 @@ public class fetchImageFromRestfulApi
     /// <param name="PictureCaption"></param>
     private void LoadPicture(string SaveFileName, string PictureCaption)
     {
-        string sendToPath = @"C:\Users\IOh\Documents\ConsoleApp\" + SaveFileName;
+        string dowloadFoldersPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        string sendToPath = dowloadFoldersPath + "\\" + SaveFileName;
+        //string sendToPath = @"C:\Users\IOh\Documents\ConsoleApp\" + SaveFileName;
         string fetchPicWithoutCaptionUri = @"https://cataas.com/cat";
         string url = "";
 

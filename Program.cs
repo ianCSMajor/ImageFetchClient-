@@ -78,14 +78,14 @@ public class fetchImageFromRestfulApi
     /// </summary>
     public void LoadPictureHelper()
     {
-        LoadPicture(SaveFileName, ImageCaption);
+        LoadPictureAsync(SaveFileName, ImageCaption);
     }
     /// <summary>
     /// Async helper function to load in image. 
     /// </summary>
     /// <param name="SaveFileName"></param>
     /// <param name="PictureCaption"></param>
-    private async Task LoadPicture(string SaveFileName, string PictureCaption)
+    private async Task LoadPictureAsync(string SaveFileName, string PictureCaption)
     {
         string dowloadFoldersPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         string sendToPath = dowloadFoldersPath + "\\" + SaveFileName;
@@ -110,7 +110,7 @@ public class fetchImageFromRestfulApi
     /// Validator to test if extension is present in user input 
     /// </summary>
     /// <param name="newFile"></param>
-    private async Task DownloadPicture(string url, string sendToPath)
+    private async Task DownloadPictureAsync(string url, string sendToPath)
     {
         using (WebClient client = new WebClient())
         {

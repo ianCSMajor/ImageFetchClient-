@@ -9,12 +9,11 @@ internal class Program
 {
     static void Main(string[] args)// -o "file.img" -t 
     {
-        string saveFileName = "newImage.jpg"; //Name of file specified by user 
-        string imageCaption = "hi"; //Text to be displayed on picture
+        string saveFileName = "newImage1.jpg"; //Name of file specified by user 
+        string imageCaption = "ya"; //Text to be displayed on picture
 
         try
         {
-
             //FOR: saving args to variables
             for (int i = 0; i < args.Length; i++)
             {
@@ -51,6 +50,7 @@ public class fetchImageFromRestfulApi
         get { return _saveFileName; }
         set
         {
+            //IF- the value passes the error checking, save to property. Else, invalid arguments. 
             if(CheckExtension(value) && CheckIllegalCharacter(value))
             {
                 _saveFileName = value;
@@ -68,11 +68,10 @@ public class fetchImageFromRestfulApi
     /// </summary>
     public fetchImageFromRestfulApi(string saveFileName, string imageCaption)
     {
-        string newFileName = extensionExists(saveFileName);
+        string newFileName = IsExtensionExists(saveFileName);
 
         SaveFileName = newFileName;
         ImageCaption = imageCaption;
-
     }
     /// <summary>
     /// Helper function for loading pictures. 
@@ -90,31 +89,39 @@ public class fetchImageFromRestfulApi
     {
         string dowloadFoldersPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         string sendToPath = dowloadFoldersPath + "\\" + SaveFileName;
-        //string sendToPath = @"C:\Users\IOh\Documents\ConsoleApp\" + SaveFileName;
-        string fetchPicWithoutCaptionUri = @"https://cataas.com/cat";
+        string fetchPicWithoutCaption = @"https://cataas.com/cat";
+        string fetchPicWithCaption = "";
         string url = "";
 
         //IF- url will grab a picture of a cat without captions, else captions input by user will be added. 
         if (PictureCaption.Length <= 0)
         {
-            url = fetchPicWithoutCaptionUri;
+            url = fetchPicWithoutCaption;
         }
         else
         {
-            fetchPicWithoutCaptionUri += @"/says/" + PictureCaption;
-            url = fetchPicWithoutCaptionUri;
+            fetchPicWithCaption = fetchPicWithoutCaption + @"/says/" + PictureCaption;
+            url = fetchPicWithCaption;
         }
-
+        DownloadPicture(url, sendToPath);
+        
+    }
+    /// <summary>
+    /// Validator to test if extension is present in user input 
+    /// </summary>
+    /// <param name="newFile"></param>
+    private async Task DownloadPicture(string url, string sendToPath)
+    {
         using (WebClient client = new WebClient())
         {
-            client.DownloadFile(new Uri(url), sendToPath);
+            await Task.Run(() => client.DownloadFile(new Uri(url), sendToPath));
         }
     }
     /// <summary>
     /// Validator to test if extension is present in user input 
     /// </summary>
     /// <param name="newFile"></param>
-    private string extensionExists(string newFile)
+    private string IsExtensionExists(string newFile)
     {
         string fileExt = System.IO.Path.GetExtension(newFile); //Retrieves extension
 
@@ -132,7 +139,7 @@ public class fetchImageFromRestfulApi
     /// <param name="extension"></param>
     private bool CheckExtension(string newFile)
     {
-        List<string> fileTypesList = new List<string> { ".tif", ".png", ".gif", ".jpg", ".bmp", ".jfif"};
+        List<string> fileTypesList = PrepValidExtData();
         string fileExt = System.IO.Path.GetExtension(newFile); //Retrieves extension
 
         //IF- extension is found in list of accepted file types. 
@@ -143,12 +150,23 @@ public class fetchImageFromRestfulApi
         return false;
     }
     /// <summary>
+    /// helper function to populate list of valid extensions. 
+    /// </summary>
+    /// <param name="extension"></param>
+    private List<string>PrepValidExtData()
+    {
+        List<string> fileTypesList = new List<string> { ".tif", ".png", ".gif", ".jpg", ".bmp", ".jfif" };
+
+        return fileTypesList;
+    }
+    /// <summary>
     /// Validator to test for illegal character input IE: '#', '=', '|', etc
     /// </summary>
     /// <param name="fileName"></param>
     private bool CheckIllegalCharacter(string fileName)
     {
         //IF- any character in the string is an illegal character, return false. Else, true.
+        
         if (fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) != -1)
         {
             return false;
